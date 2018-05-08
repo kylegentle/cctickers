@@ -22,7 +22,6 @@ class Exchange():
     def wait_time_left(self):
         elapsed_sec = (datetime.now() - self.last_request).total_seconds()
         try:
-            print(f'{self.name} wait time: {self.wait_time_sec}')
             return self.wait_time_sec - elapsed_sec
         except TypeError:
             logging.ERROR(f'wait_time_sec is undefined for {self.name}')
