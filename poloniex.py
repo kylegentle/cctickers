@@ -48,6 +48,7 @@ class Poloniex(Exchange):
                         'pair': pair,
                         'bid': resp_ticker['highestBid'],
                         'ask': resp_ticker['lowestAsk'],
+                        'last': resp_ticker['last'],
                     }
                     return ticker
                 except AssertionError:
