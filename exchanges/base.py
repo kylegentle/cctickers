@@ -5,15 +5,16 @@ import logging
 import time
 
 
-class Exchange():
+class Exchange:
     __metaclass__ = ABCMeta
 
     def __init__(self, name):
         self.name = name
         self.connected = False
-        self.currencies = None
         self.endpoint = None
         self.last_request = None
+        self.pairs = None
+        self.session = None
         self.wait_time_sec = 5
 
     async def stream_ticker(self, pair, mp_queue):
@@ -24,7 +25,7 @@ class Exchange():
     async def create(cls):
         self = cls()
         try:
-            await self._connect()
+            self.session = await self._connect()
             self.connected = True
         except Exception as e:
             logging.INFO = print  # TODO: implement actual logging
@@ -43,7 +44,6 @@ class Exchange():
 
             wait_sec = exchange._wait_time_left()
             if wait_sec > 0:
-                print(f'asynchronously waiting {wait_sec} seconds')
                 await asyncio.sleep(wait_sec)
             exchange.last_request = time.time()
 
