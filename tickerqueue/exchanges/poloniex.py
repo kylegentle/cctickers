@@ -1,7 +1,7 @@
 import aiohttp
 from datetime import datetime
 
-from exchanges.base import Exchange
+from .base import Exchange
 
 
 class Poloniex(Exchange):
