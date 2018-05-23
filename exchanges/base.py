@@ -28,8 +28,7 @@ class Exchange:
             self.session = await self._connect()
             self.connected = True
         except Exception as e:
-            logging.INFO = print  # TODO: implement actual logging
-            logging.INFO(f'Error initializing {self.name}: ' + str(e))
+            logging.info(f'Error initializing {self.name}: ' + str(e))
         return self
 
     @staticmethod
@@ -44,6 +43,7 @@ class Exchange:
 
             wait_sec = exchange._wait_time_left()
             if wait_sec > 0:
+                logging.debug(f'async waiting {wait_sec}s')
                 await asyncio.sleep(wait_sec)
             exchange.last_request = time.time()
 
@@ -55,7 +55,7 @@ class Exchange:
         try:
             return self.wait_time_sec - elapsed_sec
         except TypeError:
-            logging.ERROR(f'wait_time_sec is undefined for {self.name}')
+            logging.error(f'wait_time_sec is undefined for {self.name}')
             raise
 
     @abstractmethod
