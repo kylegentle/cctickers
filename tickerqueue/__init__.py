@@ -1,2 +1,2 @@
-from . import exchanges
+from .exchanges import *
 from .tickerqueue import tickerqueue

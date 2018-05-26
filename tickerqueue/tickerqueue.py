@@ -4,8 +4,10 @@ from multiprocessing import Process, Queue
 
 import uvloop
 
+from .exchanges import all_exchanges
 
-def tickerqueue(pair, exchanges=None):
+
+def tickerqueue(pair, exchanges=all_exchanges()):
     logging.basicConfig(level=logging.INFO)
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
     q = Queue()
