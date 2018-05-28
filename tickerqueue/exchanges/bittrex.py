@@ -18,6 +18,8 @@ class Bittrex(Exchange):
         async with session.get(endpoint) as resp:
             try:
                 assert resp.status == 200
+                resp_dict = await resp.json()
+                self.markets = {market["MarketName"] for market in resp_dict["result"]}
                 return session
             except AssertionError:
                 raise Exception(f"Bad response code {resp.status} from {resp.url}")

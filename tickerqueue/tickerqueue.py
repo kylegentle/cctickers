@@ -24,6 +24,7 @@ def tickerqueue(pair, exchanges=all_exchanges()):
 def _enqueue_tickers_from_exchanges(*exchanges, queue=None, pair=None):
     loop = asyncio.get_event_loop()
     exchanges = initialize_exchanges(loop, *exchanges)
+    exchanges = [ex for ex in exchanges if pair in ex.markets]
 
     ticker_stream_tasks = [
         asyncio.ensure_future(ex.stream_ticker(pair, queue)) for ex in exchanges

@@ -18,6 +18,8 @@ class Poloniex(Exchange):
         async with session.get(self.endpoint, params=params) as resp:
             try:
                 assert resp.status == 200
+                resp_dict = await resp.json()
+                self.markets = {market.replace("_", "-"): True for market in resp_dict}
                 return session
             except AssertionError:
                 raise Exception(f"Bad response code {resp.status} from {resp.url}")

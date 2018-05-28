@@ -13,6 +13,7 @@ class Exchange:
         self.connected = False
         self.endpoint = None
         self.last_request = None
+        self.markets = None
         self.pairs = None
         self.session = None
         self.wait_time_sec = 5
