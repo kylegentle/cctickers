@@ -1,5 +1,6 @@
 import aiohttp
 from datetime import datetime
+from decimal import Decimal
 
 from .base import Exchange
 
@@ -36,15 +37,15 @@ class Poloniex(Exchange):
         async with self.session.get(self.endpoint, params=params) as resp:
             try:
                 assert resp.status == 200
-                resp_dict = await (resp.json())
+                resp_dict = await resp.json()
                 resp_ticker = resp_dict[pair]
                 ticker = {
                     "timestamp": datetime.now(),
                     "exchange": self.name,
                     "pair": pair,
-                    "bid": resp_ticker["highestBid"],
-                    "ask": resp_ticker["lowestAsk"],
-                    "last": resp_ticker["last"],
+                    "bid": Decimal(resp_ticker["highestBid"]),
+                    "ask": Decimal(resp_ticker["lowestAsk"]),
+                    "last": Decimal(resp_ticker["last"]),
                 }
                 return ticker
             except AssertionError:
