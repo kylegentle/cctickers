@@ -12,6 +12,9 @@ class Poloniex(Exchange):
         self.endpoint = "https://poloniex.com/public"
         self.wait_time_sec = 1
 
+    def has_pair(self, pair):
+        return pair in self.markets
+
     async def _connect(self):
         params = {"command": "returnTicker"}
         session = aiohttp.ClientSession()
