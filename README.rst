@@ -14,7 +14,8 @@ Basic Example
 
    tq = tickerqueue('btc-eth')
    while True:
-       print(tq.get())
+       ticker = tq.get()
+       print(ticker)
 
 Supported Exchanges
 -------------------

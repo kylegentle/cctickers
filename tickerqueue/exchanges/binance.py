@@ -13,7 +13,7 @@ class Binance(Exchange):
         self.wait_time_sec = 0.06
 
     def has_pair(self, pair):
-        return pair.replace("-", "") in self.markets
+        return self._format_pair(pair) in self.markets
 
     async def _connect(self):
         endpoint = self.base_url + "/api/v1/exchangeInfo"
@@ -32,7 +32,8 @@ class Binance(Exchange):
     @Exchange.async_static_rate_limit
     async def _get_ticker(self, pair):
         endpoint = self.base_url + "/api/v3/ticker/bookTicker"
-        params = {"symbol": pair.replace("-", "")}
+        pair = self._format_pair(pair)
+        params = {"symbol": pair}
 
         async with self.session.get(endpoint, params=params) as resp:
             try:
@@ -49,3 +50,7 @@ class Binance(Exchange):
                 return ticker
             except AssertionError:
                 raise Exception(f"Bad response code {resp.status} from {resp.url}")
+
+    @staticmethod
+    def _format_pair(pair):
+        return "".join(pair.split("-")[::-1]).replace("-", "")
