@@ -23,7 +23,8 @@ class Exchange:
             mp_queue.put_nowait(await self._get_ticker(pair))
 
     @classmethod
-    async def create(cls):
+    async def create(cls, report_coro=None):
+        Exchange.stream_ticker = report_coro or Exchange.stream_ticker
         self = cls()
         try:
             self.session = await self._connect()
