@@ -40,6 +40,7 @@ class Bittrex(Exchange):
                 ticker = {
                     "timestamp": datetime.now(),
                     "exchange": self.name,
+                    "pair": pair,
                     "bid": Decimal(resp_ticker["Bid"]),
                     "ask": Decimal(resp_ticker["Ask"]),
                     "last": Decimal(resp_ticker["Last"]),

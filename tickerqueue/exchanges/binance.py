@@ -32,8 +32,8 @@ class Binance(Exchange):
     @Exchange.async_static_rate_limit
     async def _get_ticker(self, pair):
         endpoint = self.base_url + "/api/v3/ticker/bookTicker"
-        pair = self._format_pair(pair)
-        params = {"symbol": pair}
+        binance_pair = self._format_pair(pair)
+        params = {"symbol": binance_pair}
 
         async with self.session.get(endpoint, params=params) as resp:
             try:

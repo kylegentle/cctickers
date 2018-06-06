@@ -36,14 +36,14 @@ class Poloniex(Exchange):
 
     @Exchange.async_static_rate_limit
     async def _get_ticker(self, pair):
-        pair = self._normalize_pair(pair)
+        polo_pair = self._normalize_pair(pair)
         params = {"command": "returnTicker"}
 
         async with self.session.get(self.endpoint, params=params) as resp:
             try:
                 assert resp.status == 200
                 resp_dict = await resp.json()
-                resp_ticker = resp_dict[pair]
+                resp_ticker = resp_dict[polo_pair]
                 ticker = {
                     "timestamp": datetime.now(),
                     "exchange": self.name,
