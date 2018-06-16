@@ -32,7 +32,7 @@ class Bittrex(Exchange):
         endpoint = self.base_url + "/getticker"
         params = {"market": pair}
 
-        async with self.session.get(endpoint, params=params) as resp:
+        async with self.session.get(endpoint, params=params, timeout=10) as resp:
             try:
                 resp_dict = await resp.json()
                 assert resp_dict["success"] is True

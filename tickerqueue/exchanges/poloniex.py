@@ -39,7 +39,7 @@ class Poloniex(Exchange):
         polo_pair = self._normalize_pair(pair)
         params = {"command": "returnTicker"}
 
-        async with self.session.get(self.endpoint, params=params) as resp:
+        async with self.session.get(self.endpoint, params=params, timeout=10) as resp:
             try:
                 assert resp.status == 200
                 resp_dict = await resp.json()
