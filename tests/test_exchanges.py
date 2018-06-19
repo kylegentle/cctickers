@@ -4,40 +4,40 @@ from decimal import Decimal
 
 import aiohttp
 import pytest
+import uvloop
 
-from tickerqueue.exchanges import all_exchanges
+from tickerqueue.exchanges import all_exchanges, BID_ASK_ONLY
 
 EXCHANGE_CLASSES = all_exchanges()
 
 
-# TODO: Refactor for pytest-asyncio?
 class TestExchange:
 
-    @pytest.fixture(scope="module")
-    def loop(self):
+    @pytest.fixture(scope="class")
+    def event_loop(self):
+        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
         loop = asyncio.get_event_loop()
         yield loop
         loop.close()
 
-    @pytest.fixture(scope="module", params=EXCHANGE_CLASSES)
-    def exchange(self, loop, request):
+    @pytest.mark.asyncio
+    @pytest.fixture(scope="class", params=EXCHANGE_CLASSES)
+    async def exchange(self, request):
         exchange_cls = request.param
-        setup_task = asyncio.ensure_future(exchange_cls.create())
-        exchange = loop.run_until_complete(setup_task)
+        exchange = await exchange_cls.create()
         yield exchange
-        teardown_task = asyncio.ensure_future(exchange.session.close())
-        loop.run_until_complete(teardown_task)
+        await exchange.session.close()
+
+    @pytest.mark.asyncio
+    @pytest.fixture(scope="class")
+    async def ticker(self, exchange):
+        pair = "BTC-ETH"
+        ticker = await exchange._get_ticker(pair)
+        return ticker
 
     def test_init(self, exchange):
         assert exchange.connected is True
         assert isinstance(exchange.session, aiohttp.ClientSession)
-
-    @pytest.fixture
-    def ticker(self, exchange, loop):
-        pair = "BTC-ETH"
-        ticker_task = asyncio.ensure_future(exchange._get_ticker(pair))
-        ticker = loop.run_until_complete(ticker_task)
-        return ticker
 
     @pytest.mark.parametrize(
         "key,key_type",
@@ -46,14 +46,16 @@ class TestExchange:
             ("exchange", str),
             ("bid", Decimal),
             ("ask", Decimal),
-            ("last", Decimal),
         ],
     )
     def test_get_ticker(self, ticker, key, key_type):
-        if key == "last":
-            assert isinstance(ticker[key], key_type) or ticker[key] is None
-        else:
-            assert isinstance(ticker[key], key_type)
+        assert isinstance(ticker[key], key_type)
+
+    def test_get_ticker_last(self, ticker):
+        exchange = ticker["exchange"]
+        if exchange in BID_ASK_ONLY:
+            pytest.skip("f{exchange} API does not report last price")
+        assert isinstance(ticker["last"], Decimal)
 
     @pytest.mark.parametrize("pair", ["BTC-ETH", "BTC-XRP", "BTC-XMR", "BTC-LTC"])
     def test_has_pair(self, exchange, pair):
