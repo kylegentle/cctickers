@@ -18,7 +18,7 @@ class Bittrex(Exchange):
     async def _connect(self):
         endpoint = self.base_url + "/getmarkets"
         session = aiohttp.ClientSession()
-        async with session.get(endpoint) as resp:
+        async with session.get(endpoint, timeout=10) as resp:
             try:
                 assert resp.status == 200
                 resp_dict = await resp.json()
