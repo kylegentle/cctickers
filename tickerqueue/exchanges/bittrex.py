@@ -10,7 +10,7 @@ class Bittrex(Exchange):
     def __init__(self):
         Exchange.__init__(self, "bittrex")
         self.base_url = "https://bittrex.com/api/v1.1/public"
-        self.wait_time_sec = 1.5
+        self.wait_time_sec = 1
 
     def has_pair(self, pair):
         return pair in self.markets
@@ -37,13 +37,14 @@ class Bittrex(Exchange):
                 resp_dict = await resp.json()
                 assert resp_dict["success"] is True
                 resp_ticker = resp_dict["result"]
+                print(resp_ticker)
                 ticker = {
                     "timestamp": datetime.now(),
                     "exchange": self.name,
                     "pair": pair,
-                    "bid": Decimal(resp_ticker["Bid"]),
-                    "ask": Decimal(resp_ticker["Ask"]),
-                    "last": Decimal(resp_ticker["Last"]),
+                    "bid": Decimal(str(resp_ticker["Bid"])),
+                    "ask": Decimal(str(resp_ticker["Ask"])),
+                    "last": Decimal(str(resp_ticker["Last"])),
                 }
                 return ticker
             except AssertionError:
