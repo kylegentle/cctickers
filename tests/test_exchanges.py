@@ -46,16 +46,13 @@ class TestExchange:
             ("exchange", str),
             ("bid", Decimal),
             ("ask", Decimal),
+            ("last", Decimal),
         ],
     )
     def test_get_ticker(self, ticker, key, key_type):
-        assert isinstance(ticker[key], key_type)
-
-    def test_get_ticker_last(self, ticker):
-        exchange = ticker["exchange"]
-        if exchange in BID_ASK_ONLY:
+        if key == "last" and ticker["exchange"] in BID_ASK_ONLY:
             pytest.skip("f{exchange} API does not report last price")
-        assert isinstance(ticker["last"], Decimal)
+        assert isinstance(ticker[key], key_type)
 
     @pytest.mark.parametrize("pair", ["BTC-ETH", "BTC-XRP", "BTC-XMR", "BTC-LTC"])
     def test_has_pair(self, exchange, pair):
