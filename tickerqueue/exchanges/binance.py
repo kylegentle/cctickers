@@ -18,7 +18,7 @@ class Binance(Exchange):
     async def _connect(self):
         endpoint = self.base_url + "/api/v1/exchangeInfo"
         session = aiohttp.ClientSession()
-        async with session.get(endpoint) as resp:
+        async with session.get(endpoint, timeout=10) as resp:
             try:
                 assert resp.status == 200
                 resp_dict = await resp.json()
@@ -35,7 +35,7 @@ class Binance(Exchange):
         binance_pair = self._format_pair(pair)
         params = {"symbol": binance_pair}
 
-        async with self.session.get(endpoint, params=params) as resp:
+        async with self.session.get(endpoint, params=params, timeout=10) as resp:
             try:
                 assert resp.status == 200
                 resp_dict = await resp.json()
