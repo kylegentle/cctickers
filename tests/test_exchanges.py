@@ -6,7 +6,7 @@ import aiohttp
 import pytest
 import uvloop
 
-from ctickers.exchanges import all_exchanges, BID_ASK_ONLY
+from cctickers.exchanges import all_exchanges, BID_ASK_ONLY
 
 EXCHANGE_CLASSES = all_exchanges()
 
