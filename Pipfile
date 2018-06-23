@@ -10,6 +10,8 @@ aiodns = "*"
 uvloop = "*"
 pytest = "*"
 pytest-asyncio = "*"
+pytest-cov = "*"
+codecov = "*"
 
 [dev-packages]
 

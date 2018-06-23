@@ -7,3 +7,6 @@ install: "make"
 
 script:
   - make ci
+
+after_success:
+  codecov
