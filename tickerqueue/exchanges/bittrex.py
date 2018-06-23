@@ -37,7 +37,6 @@ class Bittrex(Exchange):
                 resp_dict = await resp.json()
                 assert resp_dict["success"] is True
                 resp_ticker = resp_dict["result"]
-                print(resp_ticker)
                 ticker = {
                     "timestamp": datetime.now(),
                     "exchange": self.name,
