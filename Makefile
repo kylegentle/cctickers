@@ -3,4 +3,4 @@ init:
 	pipenv install
 
 ci:
-	pipenv run pytest --cov=./
+	pipenv run pytest --cov=cctickers
