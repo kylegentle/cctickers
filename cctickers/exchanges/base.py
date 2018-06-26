@@ -18,9 +18,11 @@ class Exchange:
         self.session = None
         self.wait_time_sec = 5
 
-    async def stream_ticker(self, pair, mp_queue):
+    async def stream_ticker(self, pair):
         while True:
-            mp_queue.put_nowait(await self._get_ticker(pair))
+            ticker = await self._get_ticker(pair)
+            foo = "    ".join([f"{k}={v}" for k, v in ticker.items()])
+            print(foo)
 
     @classmethod
     async def create(cls, report_coro=None):

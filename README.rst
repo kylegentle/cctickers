@@ -4,7 +4,10 @@ cctickers - Cryptocurrency tickers, aggregated
    :target: https://travis-ci.com/kylegentle/cctickers
 
 .. image:: https://codecov.io/gh/kylegentle/cctickers/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/kylegentle/cctickers
+   :target: https://codecov.io/gh/kylegentle/cctickers
+
+.. image:: https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg
+   :target: https://opensource.org/licenses/MPL-2.0
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/ambv/black

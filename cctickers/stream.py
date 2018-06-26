@@ -19,16 +19,6 @@ def stream(pair, exchanges=all_exchanges()):
 
 
 def initialize_exchanges(loop, *exchange_classes):
-    creation_tasks = [
-        asyncio.ensure_future(ex.create(report_coro=stream_to_stdout))
-        for ex in exchange_classes
-    ]
+    creation_tasks = [asyncio.ensure_future(ex.create()) for ex in exchange_classes]
     exchanges = loop.run_until_complete(asyncio.gather(*creation_tasks))
     return exchanges
-
-
-async def stream_to_stdout(self, pair):
-    while True:
-        ticker = await self._get_ticker(pair)
-        foo = "    ".join([f"{k}={v}" for k, v in ticker.items()])
-        print(foo)
