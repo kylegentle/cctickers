@@ -1,10 +1,8 @@
-import asyncio
 from datetime import datetime
 from decimal import Decimal
 
 import aiohttp
 import pytest
-import uvloop
 
 from cctickers.exchanges import all_exchanges, BID_ASK_ONLY
 
@@ -12,13 +10,6 @@ EXCHANGE_CLASSES = all_exchanges()
 
 
 class TestExchange:
-
-    @pytest.fixture(scope="class")
-    def event_loop(self):
-        asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-        loop = asyncio.get_event_loop()
-        yield loop
-        loop.close()
 
     @pytest.mark.asyncio
     @pytest.fixture(scope="class", params=EXCHANGE_CLASSES)
