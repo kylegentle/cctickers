@@ -28,11 +28,10 @@ Or, from your own python program:
 
    from cctickers import tickerqueue
 
-   tq = tickerqueue('btc-eth')
-
-   while True:
-       ticker = tq.get()
-       print(ticker)
+   with tickerqueue('btc-eth') as tq:
+       while True:
+           ticker = tq.get()
+           print(ticker)
 
 Supported Exchanges
 -------------------

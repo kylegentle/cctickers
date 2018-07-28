@@ -1,4 +1,5 @@
 import asyncio
+from contextlib import contextmanager
 import logging
 from multiprocessing import Process, Queue
 
@@ -7,6 +8,7 @@ import uvloop
 from .exchanges import all_exchanges
 
 
+@contextmanager
 def tickerqueue(pair, exchanges=all_exchanges()):
     logging.basicConfig(level=logging.INFO)
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -18,7 +20,12 @@ def tickerqueue(pair, exchanges=all_exchanges()):
         name="streamer",
     )
     streamer.start()
-    return q
+    try:
+        yield q
+    finally:
+        streamer.terminate()
+        streamer.join()
+        q.close()
 
 
 def _enqueue_tickers_from_exchanges(*exchanges, queue=None, pair=None):
