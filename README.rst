@@ -12,7 +12,10 @@ cctickers - Cryptocurrency tickers, aggregated
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/ambv/black
 
-cctickers (pronounced "stickers") is a python package exposing a stream of aggregated cryptocurrency ticker data from public exchange APIs. *This package is under heavy development, and its API is subject to change. Use at your own risk.*
+
+**Notice**: This repository is unmaintained. It is left visible in case someone finds it useful or interesting.
+
+cctickers (pronounced "stickers") is a python package exposing a stream of aggregated cryptocurrency ticker data from public exchange APIs.
 
 Usage
 -------------
